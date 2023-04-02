@@ -4,6 +4,6 @@ import App from './App';
 
 test('renders learn react link', () => {
   render(<App />);
-  const linkElement = screen.getByText(/LISTAGEM DE ALUNOS/i);
+  const linkElement = screen.getByText(/DESPESAS DO MÊS/i);
   expect(linkElement).toBeInTheDocument();
 });
