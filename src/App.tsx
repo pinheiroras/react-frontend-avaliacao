@@ -8,8 +8,12 @@ type Despesa = {
   nome: string;
   valor: number;
 }
-const AZURE_APP_NAME = "app-spring-boot.azurewebsites.net";
-const API_URL = `https://${AZURE_APP_NAME}/`;
+type Info = {
+  aluno: string;
+  hostname: string;
+}
+const BACKEND_URL = "localhost:8080";
+const API_URL = `http://${BACKEND_URL}`;
 const App = () => {
 
 
@@ -18,6 +22,7 @@ const App = () => {
   });
 
   const [despesas, setDespesas] = useState<Despesa[]>([]);
+  const [info, setInfo] = useState<Info>();
   const [erros, setErros] = useState<boolean>(false);
 
   useEffect(() => {
@@ -30,8 +35,17 @@ const App = () => {
         console.log("Não foi possivel carrregar lista de despesas");
         setErros(true);
       });
-  }, []);
 
+      api
+      .get("/info")
+      .then((a) => {
+        setInfo(a.data);
+      })
+      .catch((e) => {
+        console.log("Não foi possivel carrregar Informações");
+        setErros(true);
+      });
+  }, []);
 
   return (
     <div className="App">
@@ -53,10 +67,16 @@ const App = () => {
                 <div>{a.id.toString().padStart(5,'0')}</div>
                 <div > {a.nome}</div>
                 <div > {(Math.round(a.valor * 100) / 100).toFixed(2)}</div>
-
               </div>
             </>
           ))}
+
+          {info && <>
+            <div style={{display:'flex', flexDirection:"column-reverse" ,justifyContent:'space-between', width:'100%', marginTop:'50px'}}>
+                <div > ALUNO: {info.aluno}</div>
+                <div > POD: {info.hostname}</div>
+              </div> 
+            </>}
           </div>
       </header>
     </div>
