@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:15.2
+    container_name: postgres
+    environment:
+      - POSTGRES_DB=avaliacao
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=avaliacao
+  backend:
+    image: pinheiroras/avaliacao:backend
+    container_name: backend
+    environment:
+      - DB_HOST_NAME=postgres
+      - DB_PORT=5432
+      - DB_NAME=avaliacao
+      - DB_USER=postgres
+      - DB_PASSWORD=avaliacao
+    ports:
+      - "8080"
+    depends_on:
+      - postgres
+  frontend:
+    image: pinheiroras/avaliacao:frontend
+    container_name: frontend
+    environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=avaliacao
+      - POSTGRES_PASSWORD=avaliacao
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
