@@ -17,16 +17,14 @@ services:
       - DB_USER=postgres
       - DB_PASSWORD=avaliacao
     ports:
-      - "8080"
+      - "8080:8080"
     depends_on:
       - postgres
   frontend:
     image: pinheiroras/avaliacao:frontend
+    deploy:
+      replicas: 2
     container_name: frontend
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=avaliacao
-      - POSTGRES_PASSWORD=avaliacao
     ports:
       - "3000:80"
     depends_on:
